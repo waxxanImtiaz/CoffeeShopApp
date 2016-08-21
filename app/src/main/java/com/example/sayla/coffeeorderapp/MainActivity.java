@@ -100,17 +100,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     list.setVisibility(View.VISIBLE);
                     showAmmount.setVisibility(View.VISIBLE);
                     totalAmmount = Integer.parseInt(totalOrders.getText().toString());
-                    showAmmount.setText(totalAmmount*PRICE_FOR_SEPCIAL_ORDER+"");
+                    showAmmount.setText("Total Ammount: "+totalAmmount*PRICE_FOR_SEPCIAL_ORDER+"");
                     order_type.setText("Order Type: Special");
                     quantity.setText("Total Orders:"+totalOrders.getText().toString());
                 }
                 else if(whichCbClicked.equals("normal"))
                 {
                     list.setVisibility(View.VISIBLE);
+                    showAmmount.setVisibility(View.VISIBLE);
                     totalAmmount = Integer.parseInt(totalOrders.getText().toString());
                     showAmmount.setText("Total Ammount: "+totalAmmount*PRICE_FOR_NORMAL_ORDER+"");
                     quantity.setText("Total Orders:"+totalOrders.getText().toString());
-
                     order_type.setText("Order Type: Normal");
 
                 }
@@ -119,14 +119,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 specialCoffee.setChecked(true);
                 normalCoffee.setChecked(false);
                 whichCbClicked = "special";
+                showAmmount.setVisibility(View.GONE);
+                list.setVisibility(View.GONE);
                 break;
             case R.id.normal:
                 specialCoffee.setChecked(false);
                 normalCoffee.setChecked(true);
                 whichCbClicked = "normal";
+                showAmmount.setVisibility(View.GONE);
+                list.setVisibility(View.GONE);
                 break;
-
-
 
         }
     }//end of onClick method..
