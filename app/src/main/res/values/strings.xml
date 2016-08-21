@@ -4,4 +4,6 @@
     <string name="normal">Normal Coffee</string>
     <string name="special_coffee_rate">Price of Special Coffee Rs 40</string>
     <string name="normal_coffee_rate">Price of Normal Coffee Rs 20 </string>
+    <string name="date">Date:</string>
+    <string name="hint_text">Please Enter your name</string>
 </resources>

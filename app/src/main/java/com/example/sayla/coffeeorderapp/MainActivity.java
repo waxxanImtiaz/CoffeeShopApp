@@ -4,13 +4,21 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -20,6 +28,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView totalOrders;
     TextView  showAmmount;
     private String whichCbClicked;
+    private TextView name;
+    private TextView quantity;
+    private TextView order_type;
+    private TextView date;
+    private LinearLayout list;
 
     //CHECKBOXES
     CheckBox normalCoffee;
@@ -39,14 +52,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showAmmount = (TextView)findViewById(R.id.tv_show_ammount);
         normalCoffee = (CheckBox)findViewById(R.id.normal);
         specialCoffee = (CheckBox)findViewById(R.id.special);
+        name = (TextView)findViewById(R.id.name);
+        date = (TextView)findViewById(R.id.date);
+        order_type = (TextView)findViewById(R.id.order_type);
+        quantity = (TextView)findViewById(R.id.quantity);
+        list = (LinearLayout)findViewById(R.id.list);
+
+
 
         whichCbClicked = "no";
-
+        showInputDialog();
         normalCoffee.setOnClickListener(this);
         specialCoffee.setOnClickListener(this);
         bt_increment.setOnClickListener(this);
         bt_decrement.setOnClickListener(this);
         bt_order.setOnClickListener(this);
+
+
+        SimpleDateFormat timeStampFormat = new SimpleDateFormat("dd-MMM-yyyy");
+        Date currentDate = new Date();
+        date.setText("Date: "+timeStampFormat.format(currentDate));
+        list.setVisibility(View.GONE);
     }
 
     @Override
@@ -63,19 +89,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 calculate("+");
                 break;
             case R.id.bt_order:
-                totalAmmount = Integer.parseInt(totalOrders.getText().toString());
+
+                showAmmount.setVisibility(View.GONE);
                 if(whichCbClicked.equals("no"))
                 {
                     showDialog("Please choose coffee orders");
                 }
                 else if(whichCbClicked.equals("special"))
                 {
+                    list.setVisibility(View.VISIBLE);
+                    showAmmount.setVisibility(View.VISIBLE);
+                    totalAmmount = Integer.parseInt(totalOrders.getText().toString());
                     showAmmount.setText(totalAmmount*PRICE_FOR_SEPCIAL_ORDER+"");
+                    order_type.setText("Order Type: Special");
+                    quantity.setText("Total Orders:"+totalOrders.getText().toString());
                 }
                 else if(whichCbClicked.equals("normal"))
                 {
+                    list.setVisibility(View.VISIBLE);
+                    totalAmmount = Integer.parseInt(totalOrders.getText().toString());
+                    showAmmount.setText("Total Ammount: "+totalAmmount*PRICE_FOR_NORMAL_ORDER+"");
+                    quantity.setText("Total Orders:"+totalOrders.getText().toString());
 
-                    showAmmount.setText(totalAmmount*PRICE_FOR_NORMAL_ORDER+"");
+                    order_type.setText("Order Type: Normal");
+
                 }
                 break;
             case R.id.special:
@@ -135,5 +172,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    protected void showInputDialog() {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.text_input, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        name.setText("Name: " + editText.getText());
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }
